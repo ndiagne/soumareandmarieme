@@ -72,6 +72,18 @@ body.night .hero{background:radial-gradient(circle at 14% 22%,rgba(155,92,255,.3
 </style>
 <!-- HALLOWEEN THEME END -->
 
+<!-- JUMPSCARE START (added Oct 23, 2026 - remove this block and the jumpscare script before </body> to remove the scare) -->
+<style id="jumpscare-style">
+#hw-scare{position:fixed;inset:0;z-index:3000;background:#000;display:grid;place-items:center;opacity:0;visibility:hidden;pointer-events:none}
+#hw-scare.on{opacity:1;visibility:visible}
+#hw-scare.bye{transition:opacity .28s ease;opacity:0}
+#hw-scare .face{width:min(88vw,72vh);height:auto;filter:drop-shadow(0 0 42px rgba(160,255,180,.35));animation:hwScareShake .09s linear infinite}
+@keyframes hwScareShake{0%{transform:scale(1.02) translate(0,0) rotate(0deg)}25%{transform:scale(1.07) translate(-8px,5px) rotate(-1.4deg)}50%{transform:scale(1.05) translate(7px,-6px) rotate(1.2deg)}75%{transform:scale(1.09) translate(-5px,-4px) rotate(-.8deg)}100%{transform:scale(1.06) translate(6px,6px) rotate(1deg)}}
+#hw-toast{position:fixed;left:50%;bottom:9vh;transform:translate(-50%,24px);z-index:2900;background:#241040;color:#ffd9ad;border:1px solid #ff7a1a;border-radius:999px;padding:12px 22px;font-family:Caveat,cursive;font-size:1.55rem;font-weight:600;opacity:0;visibility:hidden;transition:opacity .45s ease,transform .45s ease,visibility .45s;pointer-events:none;box-shadow:0 14px 44px rgba(0,0,0,.5);white-space:nowrap;max-width:92vw}
+#hw-toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+</style>
+<!-- JUMPSCARE STYLE END -->
+
 </head>
 <body class="locked">
   <button class="night-toggle" id="nightToggle" type="button" aria-label="Turn on Goodnight mode" aria-pressed="false">
@@ -302,6 +314,67 @@ body.night .hero{background:radial-gradient(circle at 14% 22%,rgba(155,92,255,.3
 })();
 </script>
 <!-- HALLOWEEN DECOR END -->
+
+<!-- JUMPSCARE SCRIPT START (added Oct 23, 2026) -->
+<script id="jumpscare-script">
+(function(){
+  if(document.getElementById('hw-scare'))return;
+  var fired=false,actx=null;
+  function unlockAudio(){
+    if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}
+    if(actx&&actx.state==='suspended'){actx.resume()}
+  }
+  document.addEventListener('pointerdown',unlockAudio,{passive:true});
+  var scare=document.createElement('div');scare.id='hw-scare';scare.setAttribute('aria-hidden','true');
+  scare.innerHTML='<svg class="face" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg"><path d="M200 18 C302 18 342 110 342 212 C342 282 332 332 324 402 L293 373 L263 404 L232 373 L200 406 L168 373 L137 404 L107 373 L76 402 C68 332 58 282 58 212 C58 110 98 18 200 18 Z" fill="#e9e5d8"/><ellipse cx="146" cy="176" rx="27" ry="46" fill="#050505" transform="rotate(-8 146 176)"/><ellipse cx="254" cy="176" rx="27" ry="46" fill="#050505" transform="rotate(8 254 176)"/><ellipse cx="146" cy="238" rx="30" ry="10" fill="rgba(0,0,0,.16)"/><ellipse cx="254" cy="238" rx="30" ry="10" fill="rgba(0,0,0,.16)"/><path d="M138 252 C138 344 164 390 200 390 C236 390 262 344 262 252 C236 272 164 272 138 252 Z" fill="#050505"/><path d="M148 258 L163 280 L179 260 L194 282 L209 260 L224 280 L239 260 L250 264 C222 277 178 277 150 264 Z" fill="#e9e5d8"/><circle cx="188" cy="238" r="4" fill="#050505"/><circle cx="212" cy="238" r="4" fill="#050505"/></svg>';
+  document.body.appendChild(scare);
+  var toast=document.createElement('div');toast.id='hw-toast';toast.textContent='Boo \uD83D\uDC7B got youuu. Spooky nincompoop season.';
+  document.body.appendChild(toast);
+  function scream(){
+    unlockAudio();if(!actx)return;
+    var t=actx.currentTime,dur=0.95;
+    var master=actx.createGain();master.gain.setValueAtTime(0.0001,t);
+    master.gain.exponentialRampToValueAtTime(0.5,t+0.05);
+    master.gain.exponentialRampToValueAtTime(0.0001,t+dur);master.connect(actx.destination);
+    var shaper=actx.createWaveShaper();var curve=new Float32Array(256);
+    for(var i=0;i<256;i++){var x=i/128-1;curve[i]=Math.tanh(2.4*x)}
+    shaper.curve=curve;shaper.connect(master);
+    function voice(type,f0,f1,g){
+      var o=actx.createOscillator(),og=actx.createGain();o.type=type;
+      o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur*0.9);
+      var lfo=actx.createOscillator(),lg=actx.createGain();lfo.frequency.value=32;lg.gain.value=36;
+      lfo.connect(lg);lg.connect(o.frequency);og.gain.value=g;o.connect(og);og.connect(shaper);
+      o.start(t);o.stop(t+dur);lfo.start(t);lfo.stop(t+dur);
+    }
+    voice('sawtooth',1350,340,0.55);voice('square',1780,520,0.3);voice('sawtooth',920,240,0.3);
+    var nb=actx.createBuffer(1,actx.sampleRate*dur,actx.sampleRate),nd=nb.getChannelData(0);
+    for(var j=0;j<nd.length;j++){nd[j]=(Math.random()*2-1)*(1-j/nd.length)}
+    var ns=actx.createBufferSource();ns.buffer=nb;
+    var bp=actx.createBiquadFilter();bp.type='bandpass';bp.Q.value=0.8;
+    bp.frequency.setValueAtTime(3000,t);bp.frequency.exponentialRampToValueAtTime(750,t+dur);
+    var ng=actx.createGain();ng.gain.value=0.35;
+    ns.connect(bp);bp.connect(ng);ng.connect(master);ns.start(t);ns.stop(t+dur);
+  }
+  function fire(){
+    if(fired)return;fired=true;
+    scare.classList.add('on');scream();
+    setTimeout(function(){scare.classList.add('bye')},1150);
+    setTimeout(function(){scare.remove()},1550);
+    setTimeout(function(){toast.classList.add('show')},1350);
+    setTimeout(function(){toast.classList.remove('show')},6000);
+  }
+  function watch(el,cls){
+    if(!el)return;
+    var mo=new MutationObserver(function(){
+      if(el.classList.contains(cls)){mo.disconnect();fire()}
+    });
+    mo.observe(el,{attributes:true,attributeFilter:['class']});
+  }
+  watch(document.querySelector('#holdHeart'),'complete');
+  watch(document.querySelector('#heartMessage'),'show');
+})();
+</script>
+<!-- JUMPSCARE SCRIPT END -->
 
 </body>
 </html>
