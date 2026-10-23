@@ -37,6 +37,41 @@
     @media(max-width:520px){.shell{width:min(100% - 22px,1160px)}.hero h1{font-size:3.8rem}.hero-photo{height:430px}.heart-moment{gap:14px}.hold-heart{flex-basis:112px;width:112px;height:112px}.hold-heart svg{inset:17px;width:78px;height:78px}.heart-kicker{font-size:1.3rem}.heart-hint{font-size:.8rem}.heart-message{font-size:1.08rem}.reason-card{display:block}.reason-card .polaroid{width:150px;height:190px;margin:0 auto 34px}.reason-card{text-align:center}.reason-card blockquote{font-size:2.2rem}.envelopes,.coupons{grid-template-columns:1fr}.envelope{min-height:165px}.memory-photo{height:380px}.gallery-grid{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,360px);gap:30px}.gallery-grid .polaroid:nth-child(n){grid-column:auto;grid-row:auto}.modal-card{padding:28px 22px}.section-head h2{font-size:3rem}.night-toggle{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:46px;height:46px}.night-moon{top:70px;right:13px;width:54px;height:54px}.night-moon:after{width:50px;height:50px;left:17px}body.night .password-gate:after{top:70px;right:13px;width:52px;height:52px;box-shadow:inset -15px 5px 0 #0b102b,0 0 18px rgba(255,231,181,.52),0 0 42px rgba(255,231,181,.18)}.goodnight-card{padding:30px 22px 28px}.complaint-box{padding:26px 18px;border-radius:22px}.complaint-box:before{right:18px;top:18px;font-size:2.8rem}.complaint-box h2{font-size:3.2rem;margin-right:42px}.complaint-presets{gap:8px}.complaint-chip{width:100%;text-align:left}.complaint-actions{align-items:stretch;flex-direction:column;gap:9px}.complaint-actions .primary{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.particle{display:none}}
   </style>
+<!-- HALLOWEEN THEME START (added Oct 23, 2026 - remove this block and the halloween script at the end of the body to revert) -->
+<style id="halloween-theme">
+:root,body.daytime{--paper:#1a0f26;--paper-2:#251239;--ink:#f8ecdc;--muted:#cdb4e0;--rose:#ff7a1a;--rose-dark:#ffb066;--blush:#3a1c5e;--line:#5b3486;--white:#fff7ea;--shadow:0 18px 50px rgba(0,0,0,.5);--modal:rgba(10,4,20,.72)}
+body.night{--paper:#0d0616;--paper-2:#160a26;--ink:#f5efff;--muted:#bda8d9;--rose:#ff8c2e;--rose-dark:#ffc07d;--blush:#241040;--line:#452a6b;--white:#fff7ea;--shadow:0 20px 55px rgba(0,0,0,.6);--modal:rgba(2,1,8,.86);background:#0d0616}
+body.night .hero{background:radial-gradient(circle at 14% 22%,rgba(155,92,255,.32),transparent 30%),radial-gradient(circle at 86% 12%,rgba(255,122,26,.20),transparent 26%),linear-gradient(150deg,#0d0616,#1c0b30)}
+::selection{background:#ff7a1a;color:#1a0f26}
+.hero h1{text-shadow:0 0 38px rgba(255,122,26,.35)}
+.polaroid{box-shadow:0 18px 50px rgba(255,122,26,.16),0 24px 60px rgba(0,0,0,.45)}
+#hw-decor{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
+#hw-decor .web{position:absolute;top:-14px;font-size:96px;opacity:.75;line-height:1}
+#hw-decor .web.left{left:-14px}
+#hw-decor .web.right{right:-14px;transform:scaleX(-1)}
+#hw-decor .sign{position:absolute;top:10px;left:50%;transform-origin:top center;transform:translateX(-50%);font-family:Caveat,cursive;font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:600;color:#ffb066;text-shadow:0 2px 14px rgba(255,122,26,.55);white-space:nowrap;animation:hwSwing 5.5s ease-in-out infinite}
+#hw-decor .spider{position:absolute;top:0;right:16%;display:flex;flex-direction:column;align-items:center;transform-origin:top center;animation:hwSwing 6.5s ease-in-out infinite}
+#hw-decor .spider .thread{width:1px;height:64px;background:rgba(240,230,255,.4)}
+#hw-decor .spider .bug{font-size:30px;line-height:1}
+#hw-decor .pumpkin{position:absolute;bottom:10px;line-height:1;animation:hwBob 3.6s ease-in-out infinite}
+#hw-decor .pumpkin.p1{left:14px;font-size:54px}
+#hw-decor .pumpkin.p2{right:14px;font-size:44px;animation-delay:1.2s}
+#hw-decor .ghost{position:absolute;right:5%;top:34%;font-size:46px;opacity:.85;animation:hwFloat 7s ease-in-out infinite}
+#hw-decor .bat{position:absolute;left:-80px;line-height:1;animation-name:hwFly;animation-timing-function:linear;animation-iteration-count:infinite}
+#hw-decor .bat span{display:block;animation:hwBob 1.6s ease-in-out infinite}
+#hw-decor .fall{position:absolute;top:-60px;line-height:1;opacity:.85;animation-name:hwFall;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes hwFly{to{transform:translateX(115vw)}}
+@keyframes hwFall{to{transform:translate3d(4vw,112vh,0) rotate(300deg)}}
+@keyframes hwBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes hwFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-26px) rotate(5deg)}}
+@keyframes hwSwing{0%,100%{transform:rotate(2.4deg)}50%{transform:rotate(-2.4deg)}}
+#hw-decor .sign{animation-name:hwSignSwing}
+@keyframes hwSignSwing{0%,100%{transform:translateX(-50%) rotate(1.6deg)}50%{transform:translateX(-50%) rotate(-1.6deg)}}
+@media (prefers-reduced-motion:reduce){#hw-decor{display:none}}
+@media (max-width:640px){#hw-decor .web{font-size:64px}#hw-decor .ghost{display:none}}
+</style>
+<!-- HALLOWEEN THEME END -->
+
 </head>
 <body class="locked">
   <button class="night-toggle" id="nightToggle" type="button" aria-label="Turn on Goodnight mode" aria-pressed="false">
@@ -247,5 +282,26 @@
     function heartBurst(x,y,count){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<count;i++){const h=document.createElement('span');h.className='complaint-heart';h.textContent='♡';h.style.left=x+'px';h.style.top=y+'px';h.style.setProperty('--hx',(Math.random()*220-110)+'px');h.style.setProperty('--hy',(Math.random()*-170-35)+'px');h.style.setProperty('--hr',(Math.random()*90-45)+'deg');document.body.appendChild(h);setTimeout(()=>h.remove(),1050)}}
     let lastSpark=0;document.addEventListener('pointermove',e=>{if(Date.now()-lastSpark<90||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;lastSpark=Date.now();const s=document.createElement('span');s.className='particle';s.textContent=Math.random()>.5?'♡':'·';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';s.style.fontSize=(12+Math.random()*10)+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),950)});
   </script>
+<!-- HALLOWEEN DECOR START (added Oct 23, 2026 - remove with the halloween style block in head to revert) -->
+<script id="halloween-decor-script">
+(function(){
+  if(document.getElementById('hw-decor'))return;
+  var d=document.createElement('div');d.id='hw-decor';d.setAttribute('aria-hidden','true');
+  var html='';
+  html+='<div class="web left">\uD83D\uDD78\uFE0F</div><div class="web right">\uD83D\uDD78\uFE0F</div>';
+  html+='<div class="sign">\uD83C\uDF83 Spooky nincompoop season \uD83C\uDF83</div>';
+  html+='<div class="spider"><div class="thread"></div><div class="bug">\uD83D\uDD77\uFE0F</div></div>';
+  html+='<div class="pumpkin p1">\uD83C\uDF83</div><div class="pumpkin p2">\uD83C\uDF83</div>';
+  html+='<div class="ghost">\uD83D\uDC7B</div>';
+  var bats=[{t:'7%',s:34,dur:30,del:0},{t:'16%',s:26,dur:38,del:9},{t:'26%',s:40,dur:34,del:18},{t:'12%',s:22,dur:44,del:26}];
+  bats.forEach(function(b){html+='<div class="bat" style="top:'+b.t+';font-size:'+b.s+'px;animation-duration:'+b.dur+'s;animation-delay:'+b.del+'s"><span>\uD83E\uDD87</span></div>';});
+  var falls=[{e:'\uD83C\uDF42',l:'8%',s:20,dur:15,del:1},{e:'\uD83E\uDD87',l:'24%',s:18,dur:19,del:6},{e:'\uD83C\uDF83',l:'46%',s:22,dur:17,del:3},{e:'\uD83C\uDF42',l:'63%',s:18,dur:14,del:9},{e:'\uD83D\uDC7B',l:'78%',s:20,dur:18,del:5},{e:'\uD83C\uDF42',l:'90%',s:22,dur:16,del:12}];
+  falls.forEach(function(f){html+='<div class="fall" style="left:'+f.l+';font-size:'+f.s+'px;animation-duration:'+f.dur+'s;animation-delay:'+f.del+'s">'+f.e+'</div>';});
+  d.innerHTML=html;
+  document.body.appendChild(d);
+})();
+</script>
+<!-- HALLOWEEN DECOR END -->
+
 </body>
 </html>
